@@ -7,18 +7,14 @@ import authRoutes from "./routes/login.js";
 dotenv.config();
 const app = express();
 
-/* ================= CORS FIX ================= */
+/* ================= CORS ================= */
 app.use(
   cors({
-    origin: "https://book-library-zoty.vercel.app", 
-    methods: ["GET", "POST", "OPTIONS"],
-    credentials: true,
+    origin: "https://book-library-zoty.vercel.app",
+    methods: ["GET", "POST"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
-//  VERY IMPORTANT: preflight (OPTIONS)
-app.options("*", cors());
 
 /* ================= BODY PARSER ================= */
 app.use(express.json());
@@ -32,7 +28,7 @@ app.use("/api", authRoutes);
 
 /* ================= TEST ================= */
 app.get("/", (req, res) => {
-  res.send("Login backend running ");
+  res.send("Login backend running");
 });
 
 /* ================= SERVER ================= */
