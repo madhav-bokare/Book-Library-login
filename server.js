@@ -7,33 +7,36 @@ import authRoutes from "./routes/login.js";
 dotenv.config();
 const app = express();
 
-// CORS for frontend port
+/* ================= CORS FIX ================= */
 app.use(
   cors({
-    origin: "https://book-library-zoty.vercel.app/login",
+    origin: "https://book-library-zoty.vercel.app", 
+    methods: ["GET", "POST", "OPTIONS"],
     credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
-// Body parser
+//  VERY IMPORTANT: preflight (OPTIONS)
+app.options("*", cors());
+
+/* ================= BODY PARSER ================= */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// MongoDB
+/* ================= DB ================= */
 loginConnectDB();
 
-// Routes
+/* ================= ROUTES ================= */
 app.use("/api", authRoutes);
 
-// Optional browser-friendly GET routes
-app.get("/api/login", (req, res) => {
-  res.send("Use POST /api/login with JSON body");
+/* ================= TEST ================= */
+app.get("/", (req, res) => {
+  res.send("Login backend running ");
 });
 
-app.get("/api/signup", (req, res) => {
-  res.send("Use POST /api/signup with JSON body");
-});
-
-// Server start
+/* ================= SERVER ================= */
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
+app.listen(PORT, () =>
+  console.log(`Server running on port ${PORT}`)
+);
